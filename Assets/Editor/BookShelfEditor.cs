@@ -8,12 +8,12 @@ namespace LibraryGame
     {
         SerializedProperty _slotsProp;
 
-        int     _genCount         = 12;
+        int     _genCount         = 10;
         float   _genSpacing       = 0.05f;
         Vector3 _genStart         = Vector3.zero;
         Vector3 _genDirection     = Vector3.right;
-        Vector3 _slotLocalEuler   = Vector3.zero;   // rotation của anchor = rotation sách khi đặt vào
-        Vector3 _slotColliderSize = new(0.04f, 0.22f, 0.08f);
+        Vector3 _slotLocalEuler   = new(0f, 0f, 90f);
+        Vector3 _slotColliderSize = new(1f, 0.2f, 0.75f);
 
         void OnEnable()
         {

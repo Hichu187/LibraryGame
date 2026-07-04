@@ -10,6 +10,7 @@ namespace LibraryGame
         [SerializeField] BookPickupController _pickupCtrl;
         [SerializeField] float _range = 3f;
         [SerializeField] LayerMask _slotMask;
+        [SerializeField] Camera _camera;
 
         [Header("Ghost")]
         [SerializeField] Material _ghostMaterial;
@@ -22,7 +23,11 @@ namespace LibraryGame
         GameObject         _ghostInstance;
         BookObject         _ghostSourceBook;
 
-        void Awake() => SetupDefaultBindings();
+        void Awake()
+        {
+            if (_camera == null) _camera = Camera.main;
+            SetupDefaultBindings();
+        }
 
         void OnEnable()  => _placeAction.Enable();
         void OnDisable() => _placeAction.Disable();
@@ -37,7 +42,8 @@ namespace LibraryGame
         {
             if (_pickupCtrl.TopBook == null) { HideGhost(); return; }
 
-            if (!Physics.Raycast(transformCached.position, transformCached.forward, out var hit, _range, _slotMask))
+            Transform cam = _camera.transform;
+            if (!Physics.Raycast(cam.position, cam.forward, out var hit, _range, _slotMask))
             {
                 HideGhost();
                 return;

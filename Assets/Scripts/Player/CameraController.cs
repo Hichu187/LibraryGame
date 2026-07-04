@@ -14,42 +14,26 @@ namespace LibraryGame
 
         [Header("Input")]
         [SerializeField] InputAction _lookAction;
-        [SerializeField] InputAction _cursorToggleAction;
 
         float _pitch;
 
+        // UI gọi CameraController.SetUIActive(true) để tạm dừng camera khi mở menu
+        public static bool IsUIActive { get; set; }
+
         void Awake()
         {
-            // Tự tìm PlayerBody nếu chưa gán trong Inspector (camera phải là con của Player)
             if (_playerBody == null)
                 _playerBody = transformCached.parent;
 
             SetupDefaultBindings();
         }
 
-        void OnEnable()
-        {
-            _lookAction.Enable();
-            _cursorToggleAction.Enable();
-        }
-
-        void OnDisable()
-        {
-            _lookAction.Disable();
-            _cursorToggleAction.Disable();
-        }
-
-        void Start()
-        {
-            LockCursor(true);
-        }
+        void OnEnable()  => _lookAction.Enable();
+        void OnDisable() => _lookAction.Disable();
 
         void Update()
         {
-            //if (_cursorToggleAction.WasPressedThisFrame())
-                //LockCursor(Cursor.lockState != CursorLockMode.Locked);
-
-            //if (Cursor.lockState != CursorLockMode.Locked) return;
+            if (IsUIActive) return;
 
             Vector2 delta = _lookAction.ReadValue<Vector2>() * _sensitivity;
             _pitch = Mathf.Clamp(_pitch - delta.y, _pitchMin, _pitchMax);
@@ -57,19 +41,10 @@ namespace LibraryGame
             _playerBody.Rotate(Vector3.up * delta.x);
         }
 
-        void LockCursor(bool locked)
-        {
-            // Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-            // Cursor.visible = !locked;
-        }
-
         void SetupDefaultBindings()
         {
             if (_lookAction.bindings.Count == 0)
                 _lookAction.AddBinding("<Mouse>/delta");
-
-            if (_cursorToggleAction.bindings.Count == 0)
-                _cursorToggleAction.AddBinding("<Keyboard>/escape");
         }
     }
 }

@@ -9,6 +9,7 @@ namespace LibraryGame
     {
         [SerializeField] float _range = 3f;
         [SerializeField] LayerMask _interactableMask;
+        [SerializeField] Camera _camera;
 
         [Header("Input")]
         [SerializeField] InputAction _interactAction;
@@ -21,7 +22,11 @@ namespace LibraryGame
 
         IInteractable _currentTarget;
 
-        void Awake() => SetupDefaultBindings();
+        void Awake()
+        {
+            if (_camera == null) _camera = Camera.main;
+            SetupDefaultBindings();
+        }
 
         void OnEnable()  => _interactAction.Enable();
         void OnDisable() => _interactAction.Disable();
@@ -37,7 +42,8 @@ namespace LibraryGame
             IInteractable newTarget = null;
             int mask = _interactableMask.value != 0 ? _interactableMask.value : Physics.DefaultRaycastLayers;
 
-            if (Physics.Raycast(transformCached.position, transformCached.forward, out var hit, _range, mask))
+            Transform cam = _camera.transform;
+            if (Physics.Raycast(cam.position, cam.forward, out var hit, _range, mask))
                 hit.collider.TryGetComponent(out newTarget);
 
             if (newTarget == _currentTarget) return;

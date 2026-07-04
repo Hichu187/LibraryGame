@@ -2329,15 +2329,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  _cursorToggleAction:
-    m_Name: Cursor Toggle
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2b3fe3bc-560a-41d4-89ff-fdef30b57f4b
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!114 &1947851831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2354,6 +2345,7 @@ MonoBehaviour:
   _interactableMask:
     serializedVersion: 2
     m_Bits: 16384
+  _camera: {fileID: 1947851827}
   _interactAction:
     m_Name: Interact
     m_Type: 0
@@ -2380,6 +2372,7 @@ MonoBehaviour:
   _slotMask:
     serializedVersion: 2
     m_Bits: 32768
+  _camera: {fileID: 1947851827}
   _ghostMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   _placeAction:
     m_Name: Place

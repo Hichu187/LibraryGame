@@ -25,13 +25,28 @@ namespace LibraryGame
         public BookSeries             Series  => _series;
         public IReadOnlyList<BookSlot> Slots  => _slots;
 
-        // true nếu tất cả slot đều có sách
+        // true nếu tất cả slot đều có sách (bất kể đúng/sai bộ)
         public bool IsComplete
         {
             get
             {
                 foreach (var slot in _slots)
                     if (slot.IsEmpty) return false;
+                return true;
+            }
+        }
+
+        // true nếu tất cả slot có sách VÀ tất cả sách đúng bộ của kệ
+        public bool IsCorrectlyComplete
+        {
+            get
+            {
+                if (_series == null) return false;
+                foreach (var slot in _slots)
+                {
+                    if (slot.IsEmpty) return false;
+                    if (slot.Book.Series != _series) return false;
+                }
                 return true;
             }
         }

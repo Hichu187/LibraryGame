@@ -1,16 +1,48 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using BaXoai;
 
-public class GameManager : MonoBehaviour
+namespace LibraryGame
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        
-    }
+        [SerializeField] List<BookShelf> _allShelves = new();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public int TotalShelves    => _allShelves.Count;
+        public int CompletedCount  { get; private set; }
+
+        // UI subscribe để cập nhật HUD tiến trình
+        public static event Action<int, int> OnProgressChanged;  // (completed, total)
+        public static event Action           OnAllShelvesComplete;
+
+        void OnEnable()
+        {
+            StaticBus<BookPlacedEvent>.Subscribe(OnBookPlaced);
+        }
+
+        void OnDisable()
+        {
+            StaticBus<BookPlacedEvent>.Unsubscribe(OnBookPlaced);
+        }
+
+        void OnBookPlaced(BookPlacedEvent e)
+        {
+            if (!e.IsCorrect) return;
+            RefreshProgress();
+        }
+
+        void RefreshProgress()
+        {
+            int count = 0;
+            foreach (var shelf in _allShelves)
+                if (shelf.IsCorrectlyComplete) count++;
+
+            CompletedCount = count;
+            OnProgressChanged?.Invoke(CompletedCount, TotalShelves);
+
+            if (CompletedCount == TotalShelves && TotalShelves > 0)
+                OnAllShelvesComplete?.Invoke();
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using BaXoai;
 
 namespace LibraryGame
 {
@@ -68,6 +69,17 @@ namespace LibraryGame
             transform.localScale    = _originalScale;
 
             PlaceOnShelf(shelf);
+
+            bool isCorrect = _book != null && _book.Series == shelf.Series;
+            StaticBus<BookPlacedEvent>.Post(new BookPlacedEvent
+            {
+                Book      = this,
+                Shelf     = shelf,
+                IsCorrect = isCorrect,
+            });
+
+            if (shelf.IsCorrectlyComplete)
+                StaticBus<ShelfCompletedEvent>.Post(new ShelfCompletedEvent { Shelf = shelf });
         }
 
         public void PlaceOnShelf(BookShelf shelf) => _shelf = shelf;

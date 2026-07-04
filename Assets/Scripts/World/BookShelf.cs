@@ -97,8 +97,8 @@ namespace LibraryGame
 #if UNITY_EDITOR
         void OnValidate()
         {
-            if (_slots.Count < 10 || _slots.Count > 15)
-                Debug.LogWarning($"[BookShelf] '{name}': mỗi bộ sách nên có 10–15 quyển (hiện tại: {_slots.Count}).", this);
+            if (_slots.Count > 0 && _slots.Count != 10)
+                Debug.LogWarning($"[BookShelf] '{name}': mỗi bộ sách nên có đúng 10 quyển (hiện tại: {_slots.Count}).", this);
 
             if (_series == null) return;
 
